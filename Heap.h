@@ -37,5 +37,12 @@ private:
   void trickleDown(int);
 
   //You can include additional private helper functions here
+
+  bool isEmpty(); //returns true if numItems == 0
+  int getParentIndex(int); //returns index of parent
+
+  /* takes in two indices that correlate to the pointers that need to be swapped
+    also will determine if they need to be swapped */
+  void swap(int, int);
 };
 #endif
