@@ -35,7 +35,15 @@ void Heap::enqueue(PrintJob* newone){
 
 void Heap::dequeue ( )
 {
-  trickleDown(0);
+  PrintJob* temp = arr[0];
+  arr[0] = arr[numItems - 1];
+  arr[numItems - 1] = temp;
+  int currIndex = 0;
+  while (currIndex < numItems)
+  {
+    trickleDown(currIndex);
+    currIndex = 
+  }
 }
 
 void Heap::trickleDown(int currIndex)
@@ -80,4 +88,14 @@ void Heap::print ( )
   cout << "Job Number: " << highest()->getJobNumber() << ", ";
   cout << "Number of Pages: " << highest()->getPages() << ", ";
   cout << endl;
+}
+
+int Heap::getRightChildIndex(int parentIndex)
+{
+  return 2 * parentIndex + 2;
+}
+
+int Heap::getLeftChildIndex(int parentIndex)
+{
+  return 2 * parentIndex + 1;
 }

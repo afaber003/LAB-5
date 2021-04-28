@@ -47,5 +47,9 @@ private:
     also will determine if they need to be swapped (if the first one is of larger priority, they will be swapped)
     returns true if the swap happened */
   bool swap(int, int);
+
+  int getRightChildIndex(int);
+
+  int getLeftChildIndex(int);
 };
 #endif
