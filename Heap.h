@@ -51,5 +51,7 @@ private:
   int getRightChildIndex(int);
 
   int getLeftChildIndex(int);
+
+  int getGreatestChildIndex(int);
 };
 #endif

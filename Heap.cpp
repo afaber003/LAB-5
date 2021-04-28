@@ -38,55 +38,52 @@ void Heap::dequeue ( )
   PrintJob* temp = arr[0];
   arr[0] = arr[numItems - 1];
   arr[numItems - 1] = temp;
-  int currIndex = 0;
-  while (currIndex < numItems)
-  {
-    trickleDown(currIndex);
-    currIndex = 
-  }
+  numItems--;
+
+  trickleDown(0);
+  
 }
 
-void Heap::trickleDown(int currIndex)
+void Heap::trickleDown(int parentIndex)
 {
-  int childIndex = 2 * currIndex + 1;
-  int currPriority = arr[currIndex]->getPriority();
+  int childIndex = getGreatestChildIndex(parentIndex);
+  if(childIndex == -1){
+    return;
+  }
 
-  while (childIndex < numItems)
+ 
+ while (childIndex < numItems && arr[parentIndex]->getPriority() < arr[childIndex]->getPriority())
   {
-    int maxPriority = currPriority;
-    int maxIndex = -1;
-    for (int i = 0; i < 2 && i + childIndex < numItems; i++) {
-      if (arr[i + childIndex]->getPriority() > maxPriority)
-      {
-        maxPriority = arr[i + childIndex]->getPriority();
-        maxIndex = i + childIndex;
-
-      }
-    }
-
-    if (maxPriority == currPriority)
-    {
+    swap(childIndex, parentIndex);
+    parentIndex = childIndex;
+    childIndex = getGreatestChildIndex(parentIndex);
+    if(childIndex == -1){
       return;
     }
-    else
-    {
-      swap(maxIndex, currIndex);
-      currIndex = maxIndex;
-      childIndex = 2 * currIndex + 1;
-    }
+
   }
+
 }
 
 PrintJob* Heap::highest ( )
 {
-  return arr[0];
+  if(numItems > 0){
+    return arr[0];
+  }
+  else{
+    return nullptr;
+  }
 }
 
-void Heap::print ( )
+void Heap::print ()
 {
+  if (isEmpty())
+  {
+    return;
+  }
   cout << "Priority: " << highest()->getPriority() << ", ";
   cout << "Job Number: " << highest()->getJobNumber() << ", ";
-  cout << "Number of Pages: " << highest()->getPages() << ", ";
+  cout << "Number of Pages: " << highest()->getPages();
   cout << endl;
 }
 
@@ -98,4 +95,34 @@ int Heap::getRightChildIndex(int parentIndex)
 int Heap::getLeftChildIndex(int parentIndex)
 {
   return 2 * parentIndex + 1;
+}
+
+int Heap::getGreatestChildIndex(int parentIndex)
+{
+    int childIndex;
+    
+    int rightChild = getRightChildIndex(parentIndex);
+    int leftChild = getLeftChildIndex(parentIndex);
+    //if both are out of range, at a leaf node
+    if(rightChild > numItems && leftChild > numItems){
+      return -1;
+    }
+    else if(leftChild <= numItems && rightChild <= numItems){
+      if(arr[rightChild]->getPriority() > arr[leftChild]->getPriority())
+      {
+        childIndex = rightChild;
+      }
+      else
+      {
+        childIndex = leftChild;
+      }
+    }
+    //only has left child
+    else if(leftChild <= numItems){
+      childIndex = leftChild;
+    }
+    else if (rightChild <= numItems){
+      childIndex = rightChild;
+    }
+    return childIndex;
 }
