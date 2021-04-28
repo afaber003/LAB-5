@@ -44,7 +44,8 @@ private:
   int getParentIndex(int); //returns index of parent
 
   /* takes in two indices that correlate to the pointers that need to be swapped
-    also will determine if they need to be swapped */
-  void swap(int, int);
+    also will determine if they need to be swapped (if the first one is of larger priority, they will be swapped)
+    returns true if the swap happened */
+  bool swap(int, int);
 };
 #endif

@@ -14,23 +14,23 @@ int Heap::getParentIndex(int childIndex){
     return ((childIndex - 1) / 2);
 }
 
-void Heap::swap(int child, int parent){
+bool Heap::swap(int child, int parent){
     if (arr[child]->getPriority() > arr[parent]->getPriority()){
         PrintJob* temp = arr[parent];
         arr[parent] = arr[child];
         arr[child] = temp;
-    } else return;
+        return true;
+    } else return false;
 }
 
 void Heap::enqueue(PrintJob* newone){
     arr[numItems] = newone;
-
     int currIndex = numItems;
-    while (arr[currIndex]->getPriority() > arr[getParentIndex(currIndex)]->getPriority()){
-        swap(currIndex, getParentIndex(currIndex));
+    while (swap(currIndex, getParentIndex(currIndex))){
         currIndex = getParentIndex(currIndex);
         if (currIndex == 0){break;}
     }
+    numItems++;
 }
 
 void Heap::dequeue ( )
