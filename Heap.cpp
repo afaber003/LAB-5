@@ -1,5 +1,6 @@
 #include "Heap.h"
 
+
 using namespace std;
 
 bool Heap::isEmpty(){
@@ -23,13 +24,60 @@ void Heap::swap(int child, int parent){
 
 void Heap::enqueue(PrintJob* newone){
     arr[numItems] = newone;
-    if (isEmpty() || getParentIndex(numItems) == 0){
-        return;
-    }
+
     int currIndex = numItems;
     while (arr[currIndex]->getPriority() > arr[getParentIndex(currIndex)]->getPriority()){
         swap(currIndex, getParentIndex(currIndex));
         currIndex = getParentIndex(currIndex);
         if (currIndex == 0){break;}
     }
+}
+
+void Heap::dequeue ( )
+{
+  trickleDown(0);
+}
+
+void Heap::trickleDown(int currIndex)
+{
+  int childIndex = 2 * currIndex + 1;
+  int currPriority = arr[currIndex]->getPriority();
+
+  while (childIndex < numItems)
+  {
+    int maxPriority = currPriority;
+    int maxIndex = -1;
+    for (int i = 0; i < 2 && i + childIndex < numItems; i++) {
+      if (arr[i + childIndex]->getPriority() > maxPriority)
+      {
+        maxPriority = arr[i + childIndex]->getPriority();
+        maxIndex = i + childIndex;
+
+      }
+    }
+
+    if (maxPriority == currPriority)
+    {
+      return;
+    }
+    else
+    {
+      swap(maxIndex, currIndex);
+      currIndex = maxIndex;
+      childIndex = 2 * currIndex + 1;
+    }
+  }
+}
+
+PrintJob* Heap::highest ( )
+{
+  return arr[0];
+}
+
+void Heap::print ( )
+{
+  cout << "Priority: " << highest()->getPriority() << ", ";
+  cout << "Job Number: " << highest()->getJobNumber() << ", ";
+  cout << "Number of Pages: " << highest()->getPages() << ", ";
+  cout << endl;
 }

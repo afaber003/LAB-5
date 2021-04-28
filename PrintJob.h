@@ -1,5 +1,6 @@
 #ifndef __PRINTJOB_H
 #define __PRINTJOB_H
+#include <iostream>
 
 using namespace std;
 
