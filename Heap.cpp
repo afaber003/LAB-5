@@ -4,37 +4,39 @@
 using namespace std;
 
 bool Heap::isEmpty(){
-    if (numItems == 0){
-        return true;
-    }
-    return false;
+  if (numItems == 0){
+    return true;
+  }
+  return false;
 }
 
 int Heap::getParentIndex(int childIndex){
-    return ((childIndex - 1) / 2);
+  return ((childIndex - 1) / 2);
 }
 
 bool Heap::swap(int child, int parent){
-    if (arr[child]->getPriority() > arr[parent]->getPriority()){
-        PrintJob* temp = arr[parent];
-        arr[parent] = arr[child];
-        arr[child] = temp;
-        return true;
-    } else return false;
+  if (child > numItems || parent > numItems || parent < 0) return false;
+  if (arr[child]->getPriority() > arr[parent]->getPriority()){
+    PrintJob* temp = arr[parent];
+    arr[parent] = arr[child];
+    arr[child] = temp;
+    return true;
+  } else return false;
 }
 
 void Heap::enqueue(PrintJob* newone){
-    arr[numItems] = newone;
-    int currIndex = numItems;
-    while (swap(currIndex, getParentIndex(currIndex))){
-        currIndex = getParentIndex(currIndex);
-        if (currIndex == 0){break;}
-    }
-    numItems++;
+  if (numItems == MAX_HEAP_SIZE){return;}
+  arr[numItems] = newone;
+  int currIndex = numItems;
+  while (currIndex != 0 and swap(currIndex, getParentIndex(currIndex))){
+    currIndex = getParentIndex(currIndex);
+  }
+  numItems++;
 }
 
 void Heap::dequeue ( )
 {
+  if (isEmpty()){return;}
   PrintJob* temp = arr[0];
   arr[0] = arr[numItems - 1];
   arr[numItems - 1] = temp;
@@ -89,12 +91,12 @@ void Heap::print ()
 
 int Heap::getRightChildIndex(int parentIndex)
 {
-  return 2 * parentIndex + 2;
+  return (2 * parentIndex) + 2;
 }
 
 int Heap::getLeftChildIndex(int parentIndex)
 {
-  return 2 * parentIndex + 1;
+  return (2 * parentIndex) + 1;
 }
 
 int Heap::getGreatestChildIndex(int parentIndex)
@@ -104,10 +106,10 @@ int Heap::getGreatestChildIndex(int parentIndex)
     int rightChild = getRightChildIndex(parentIndex);
     int leftChild = getLeftChildIndex(parentIndex);
     //if both are out of range, at a leaf node
-    if(rightChild > numItems && leftChild > numItems){
+    if (rightChild > numItems && leftChild > numItems){
       return -1;
     }
-    else if(leftChild <= numItems && rightChild <= numItems){
+    else if(leftChild < numItems && rightChild < numItems){
       if(arr[rightChild]->getPriority() > arr[leftChild]->getPriority())
       {
         childIndex = rightChild;
@@ -117,11 +119,20 @@ int Heap::getGreatestChildIndex(int parentIndex)
         childIndex = leftChild;
       }
     }
-    //only has left child
-    else if(leftChild <= numItems){
+    //if just the left child is higher
+    else if (arr[leftChild]->getPriority() > arr[parentIndex]->getPriority()){
       childIndex = leftChild;
     }
-    else if (rightChild <= numItems){
+    //if just the right child is higher
+    else if (arr[rightChild]->getPriority() > arr[parentIndex]->getPriority()){
+      childIndex = rightChild;
+    }
+    //only has left child
+    else if(leftChild < numItems){
+      childIndex = leftChild;
+    }
+    //only has right child
+    else if (rightChild < numItems){
       childIndex = rightChild;
     }
     return childIndex;

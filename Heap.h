@@ -12,9 +12,7 @@ private:
 
 public:
   /*Initializes an empty heap.*/
-  Heap(){
-    numItems = 0;
-  };
+  Heap(){numItems = 0;};
 
   /*Inserts a PrintJob to the heap without
   violating max-heap properties.*/
